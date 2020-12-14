@@ -30,9 +30,9 @@ gulp.task("browser-sync", function () {
 gulp.task("styles", function () {
   return (
     gulp
-      .src("app/" + syntax + "/**/*." + syntax + "")
-      .pipe(sass({ outputStyle: "expanded" }).on("error", notify.onError()))
-      .pipe(autoprefixer(["last 10 versions"]))
+      .src("app/sass/*.scss")
+      .pipe(sass({ outputStyle: "compressed" }).on("error", notify.onError()))
+      .pipe(autoprefixer(["last 5 versions"]))
       // .pipe(rename({ suffix: '.min', prefix : '' }))
       // .pipe(cleancss( {level: { 1: { specialComments: 0 } } }))
       .pipe(gulp.dest("app/css"))

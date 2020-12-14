@@ -1,0 +1,110 @@
+@mixin icon($image, $width, $height) {
+  background: {
+    image: $image;
+    repeat: no-repeat;
+    size: 100% 100%;
+  }
+
+  display: flex;
+  align-items: center;
+  width: $width;
+  height: $height;
+}
+
+@mixin font-face($font-name, $path, $weight: normal, $style: normal) {
+  @font-face {
+    font-family: quote($font-name);
+    src: url($path + ".woff") format("woff"), 
+        url($path + ".woff2") format('woff2');
+    font-weight: $weight;
+    font-style: $style;
+    font-display: swap;
+  }
+}
+
+@mixin font-face2($font-family, $url, $weight) {
+  @font-face {
+    font-family: '#{$font-family}';
+    src: url('../fonts/#{$url}.woff2') format('woff2');
+    font-weight: #{$weight};
+    font-display: swap;
+    font-style: normal;
+  }
+}
+
+
+
+@mixin font-awesome($content,  $weight) {
+  font-family: "Font Awesome 5 Free";
+  content: $content;
+  font-weight: $weight;
+}
+
+
+@mixin burger {
+	width: var(--burger-width);
+	height: var(--burger-height);
+	position: relative;
+	color: #000;
+
+	&__line {
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 100%;
+		height: var(--burger-line-height);
+		background-color: currentColor;
+		transition: transform 0.3s ease-in-out;
+	}
+
+	&::before,
+	&::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		width: 100%;
+		height: var(--burger-line-height);
+		background-color: currentColor;
+		transition: transform 0.3s ease-in-out, top 0.3s ease-in-out;
+	}
+
+	&::before {
+		top: 0;
+	}
+
+	&::after {
+		top: calc(100% - var(--burger-line-height));
+	}
+
+	&--active {
+		.burger__line {
+			transform: scale(0);
+			transition: transform 0.3s ease-in-out;
+		}
+
+		&::before {
+			transform: rotate(45deg);
+			top: 50%;
+			transition: transform 0.3s ease-in-out, top 0.3s ease-in-out;
+		}
+
+		&::after {
+			transform: rotate(-45deg);
+			top: 50%;
+			transition: transform 0.3s ease-in-out, top 0.3s ease-in-out;
+		}
+	}
+}
+
+
+@mixin visually-hidden {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px);
+	clip: rect(1px, 1px, 1px, 1px);
+	padding: 0 !important;
+	border: 0 !important;
+	height: 1px !important;
+	width: 1px !important;
+	overflow: hidden;
+}

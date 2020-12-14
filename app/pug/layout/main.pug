@@ -33,21 +33,17 @@ html(lang="ru")
 		meta(name="msapplication-navbutton-color" content="#000")
 		meta(name="apple-mobile-web-app-status-bar-style" content="#000")
 		// CSS 
-		block libs-css
-		link(rel="stylesheet" href="css/styles.css")
+		link(rel="stylesheet", href="css/libs.css")
+		link(rel="stylesheet" href="css/style.css")
 		title #{title}
 
 	body 
-		.page
 
-			include ../sections/header
+		include ../sections/header
 
+		block content
 
-			block content
+		include ../sections/footer
 
-
-			include ../sections/footer
-
-
-		// Скрипты
+		// Scripts
 		include ../pug-modules/scripts
