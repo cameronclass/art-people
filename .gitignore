@@ -97,3 +97,15 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 *.lnk
+
+### Theme ###
+/dist/
+/temp/
+/.git/
+/app/*.html
+/app/css/
+/app/js/
+/package-lock.json
+/**/_backstage
+/**/Thumbs.db
+/**/*.DS_Store
