@@ -40,7 +40,7 @@ gulp.task("styles", function () {
   );
 });
 
-gulp.task("scripts", function () {
+/* gulp.task("scripts", function () {
   return (
     gulp
       .src([
@@ -53,7 +53,7 @@ gulp.task("scripts", function () {
       .pipe(gulp.dest("app/js"))
       .pipe(browserSync.reload({ stream: true }))
   );
-});
+}); */
 
 // Сборка проекта
 
@@ -80,10 +80,10 @@ gulp.task("buildFiles", function () {
   return gulp.src(["app/*.html"]).pipe(gulp.dest("dist"));
 });
 gulp.task("buildCss", function () {
-  return gulp.src(["app/css/styles.css"]).pipe(gulp.dest("dist/css"));
+  return gulp.src(["app/css/*.css"]).pipe(gulp.dest("dist/css"));
 });
 gulp.task("buildJs", function () {
-  return gulp.src(["app/js/scripts.js"]).pipe(gulp.dest("dist/js"));
+  return gulp.src(["app/js/*.js"]).pipe(gulp.dest("dist/js"));
 });
 gulp.task("buildFonts", function () {
   return gulp.src(["app/fonts/**/*"]).pipe(gulp.dest("dist/fonts"));
@@ -98,7 +98,7 @@ gulp.task(
     "removedist",
     "imagemin",
     "styles",
-    "scripts",
+    /* "scripts", */
     "buildFiles",
     "buildCss",
     "buildJs",
@@ -129,15 +129,12 @@ gulp.task("pugCompile", function () {
 
 gulp.task("watch", function () {
   gulp.watch("app/sass/**/*.scss", gulp.parallel("styles"));
-  gulp.watch(
-    ["libs/**/*.js", "app/include/common.js"],
-    gulp.parallel("scripts")
-  );
+  //gulp.watch(
+  //  ["app/js/**/*.js"],
+  //  gulp.parallel("scripts")
+  //);
   // gulp.watch('app/*.html', gulp.parallel('code'));
   gulp.watch(["app/pug/**/*.pug"], gulp.parallel("pugCompile"));
 });
 
-gulp.task(
-  "default",
-  gulp.parallel("watch", "styles", "scripts", "browser-sync")
-);
+gulp.task("default", gulp.parallel("watch", "styles", "browser-sync"));
