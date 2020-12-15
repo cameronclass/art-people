@@ -1,0 +1,35 @@
+.opening{
+	&__wrap{
+		display: flex;
+	}
+	&__left{
+		flex: 0 1 50%;
+	}
+	&__right{
+	}
+	&__img-block{
+	}
+	h1{
+		font-family: $RobotoMedium;
+	}
+	&__img-block{
+		position: absolute;
+		right: 0;
+	}
+	&__img{
+		position: relative;
+		z-index: 2;
+	}
+	&__img-ball{
+		position: absolute;
+		z-index: -1;
+		left: 152px;
+		bottom: 173px;
+	}
+	&__img-text{
+		position: absolute;
+		z-index: -1;
+		bottom: 82px;
+		left: 380px;
+	}
+}
