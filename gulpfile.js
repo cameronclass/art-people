@@ -128,7 +128,7 @@ gulp.task("pugCompile", function () {
 // gulp.task('code', gulp.series('pugCompile', 'pugClean'));
 
 gulp.task("watch", function () {
-  gulp.watch("app/" + syntax + "/**/*." + syntax + "", gulp.parallel("styles"));
+  gulp.watch("app/sass/**/*.scss", gulp.parallel("styles"));
   gulp.watch(
     ["libs/**/*.js", "app/include/common.js"],
     gulp.parallel("scripts")
