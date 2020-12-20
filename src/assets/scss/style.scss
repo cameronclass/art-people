@@ -6,6 +6,8 @@
 /* Template */
 @import "common/fonts";
 @import "common/preloader";
+@import "common/buttons";
+@import "common/form";
 @import "template";
 @import "classes";
 
@@ -15,6 +17,10 @@
 
 /* Pages */
 @import "pages/home";
+@import "pages/history";
 
 /* Sliders */
 @import "common/sliders";
+
+/* Aos */
+@import "libs/aos";

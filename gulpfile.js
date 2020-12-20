@@ -7,7 +7,7 @@ const cssbeautify = require("gulp-cssbeautify");
 const removeComments = require("gulp-strip-css-comments");
 const sass = require("gulp-sass");
 const cssnano = require("gulp-cssnano");
-const uglify = require("gulp-uglify");
+const uglify = require("gulp-uglify-es").default;
 const plumber = require("gulp-plumber");
 const panini = require("panini");
 const imagemin = require("gulp-imagemin");
@@ -29,18 +29,19 @@ const distPath = "dist/";
 const path = {
   build: {
     html: distPath,
-    js: distPath + "/assets/js/",
-    css: distPath + "/assets/css/",
-    images: distPath + "/assets/images/",
-    fonts: distPath + "/assets/fonts/",
+    js: distPath + "assets/js/",
+    css: distPath + "assets/css/",
+    images: distPath + "assets/images/",
+    fonts: distPath + "assets/fonts/",
   },
   src: {
     html: srcPath + "*.html",
-    js: srcPath + "/assets/js/*.js",
-    css: srcPath + "/assets/scss/*.scss",
+    js: srcPath + "assets/js/app.js",
+    css: srcPath + "assets/scss/*.scss",
     images:
       srcPath +
-      "/assets/images/**/*.{jpg,png,svg,gif,ico,webp,webmanifest,xml,json}",
+      "assets/images/**/*.{jpg,png,gif,ico,webp,webmanifest,xml,json}",
+    svg: srcPath + "assets/images/**/**/*.svg",
     fonts: srcPath + "/assets/fonts/**/*.{eot,woff,woff2,ttf,svg}",
   },
   watch: {
@@ -49,7 +50,8 @@ const path = {
     css: srcPath + "assets/scss/**/*.scss",
     images:
       srcPath +
-      "assets/images/**/**/*.{jpg,png,svg,gif,ico,webp,webmanifest,xml,json}",
+      "assets/images/**/**/*.{jpg,png,gif,ico,webp,webmanifest,xml,json}",
+    svg: srcPath + "assets/images/**/**/*.svg",
     fonts: srcPath + "assets/fonts/**/*.{eot,woff,woff2,ttf,svg}",
   },
   clean: "./" + distPath,
@@ -172,15 +174,7 @@ function js(cb) {
       )
       .pipe(fileinclude())
       .pipe(uglify())
-      /* .pipe(
-      webpackStream({
-        mode: "production",
-        output: {
-          filename: "app.js",
-        },
-        module: {},
-      })
-    ) */
+      
       .pipe(dest(path.build.js))
       .pipe(browserSync.reload({ stream: true }))
   );
@@ -190,7 +184,7 @@ function js(cb) {
 
 function jsWatch(cb) {
   return (
-    src(path.src.js, { base: srcPath + "assets/js/" })
+    src(path.watch.js, { base: srcPath + "assets/js/" })
       .pipe(
         plumber({
           errorHandler: function (err) {
@@ -204,15 +198,6 @@ function jsWatch(cb) {
       )
       .pipe(fileinclude())
       .pipe(uglify())
-      // IF needed webpack stream
-      /* .pipe(
-        webpackStream({
-          mode: "development",
-          output: {
-            filename: "app.js",
-          },
-        })
-      ) */
       .pipe(dest(path.build.js))
       .pipe(browserSync.reload({ stream: true }))
   );
@@ -225,13 +210,21 @@ function images(cb) {
     .pipe(
       imagemin([
         imagemin.gifsicle({ interlaced: true }),
-        imagemin.mozjpeg({ quality: 95, progressive: true }),
+        imagemin.mozjpeg({ quality: 65, progressive: true }),
         imagemin.optipng({ optimizationLevel: 5 }),
         imagemin.svgo({
-          plugins: [{ removeViewBox: true }, { cleanupIDs: false }],
+          plugins: [{ removeViewBox: false }, { cleanupIDs: false }],
         }),
       ])
     )
+    .pipe(dest(path.build.images))
+    .pipe(browserSync.reload({ stream: true }));
+
+  cb();
+}
+
+function svg(cb) {
+  return src(path.src.svg)
     .pipe(dest(path.build.images))
     .pipe(browserSync.reload({ stream: true }));
 
@@ -260,9 +253,10 @@ function watchFiles() {
   gulp.watch([path.watch.js], jsWatch);
   gulp.watch([path.watch.images], images);
   gulp.watch([path.watch.fonts], fonts);
+  gulp.watch([path.watch.svg], svg);
 }
 
-const build = gulp.series(clean, gulp.parallel(html, css, js, images, fonts));
+const build = gulp.series(clean, gulp.parallel(html, css, js, images, fonts, svg));
 const watch = gulp.parallel(build, watchFiles, serve);
 
 /* Exports Tasks */
@@ -270,6 +264,7 @@ exports.html = html;
 exports.css = css;
 exports.js = js;
 exports.images = images;
+exports.svg = svg;
 exports.fonts = fonts;
 exports.clean = clean;
 exports.build = build;
